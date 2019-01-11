@@ -30,7 +30,7 @@ public class BetterBannerListener implements Listener {
         Integer runnableDelay = 1;
         if (!event.isCancelled()) {
             Inventory clickedInv = event.getClickedInventory();
-            if (clickedInv != null && clickedInv instanceof CraftingInventory) {
+            if (clickedInv instanceof CraftingInventory) {
                 int invSize = clickedInv.getSize();
                 if (event.getSlot() == 0) {
                     this.plugin.debug("-------- Player clicked the output slot of a crafting window");
@@ -39,9 +39,9 @@ public class BetterBannerListener implements Listener {
                         return;
                     }
 
-                    Integer banners = 0;
+                    int banners = 0;
 
-                    Integer i;
+                    int i;
                     for (i = 1; i < invSize; i = i + 1) {
                         if (clickedInv.getItem(i) != null && BannerUtil.isBanner(clickedInv.getItem(i).getType())) {
                             banners = banners + 1;
@@ -66,7 +66,7 @@ public class BetterBannerListener implements Listener {
                     }
 
                     this.plugin.debug("We are handling this craft...item->cursor, crafting->each-1");
-                    event.setCursor(clickedInv.getItem(0));
+                    event.setCursor(clickedInv.getItem(0)); //TODO
                     clickedInv.clear(0);
 
                     for (i = 1; i < 10; i = i + 1) {
@@ -100,38 +100,38 @@ public class BetterBannerListener implements Listener {
     public void bbInventoryDragEvent(InventoryDragEvent event) {
         if (!event.isCancelled()) {
             Inventory topInventory = event.getInventory();
-            if (topInventory != null) {
-                if (topInventory.getType() == InventoryType.WORKBENCH || topInventory.getType() == InventoryType.CRAFTING) {
-                    Integer craftingSize = topInventory.getSize();
-                    if (craftingSize == 10 || craftingSize == 5) {
-                        Set<Integer> slotsEffected = event.getRawSlots();
-                        boolean alteredCrafting = false;
-                        Iterator var7 = slotsEffected.iterator();
+            if (topInventory != null
+                    && (topInventory.getType() == InventoryType.WORKBENCH || topInventory.getType() == InventoryType.CRAFTING)) {
 
-                        while (var7.hasNext()) {
-                            Integer a = (Integer) var7.next();
-                            if (a < craftingSize) {
-                                alteredCrafting = true;
-                                break;
-                            }
-                        }
+                Integer craftingSize = topInventory.getSize();
+                if (craftingSize == 10 || craftingSize == 5) {
+                    Set<Integer> slotsEffected = event.getRawSlots();
+                    boolean alteredCrafting = false;
+                    Iterator var7 = slotsEffected.iterator();
 
-                        if (alteredCrafting) {
-                            this.bbHandleInventory(event, topInventory, event.getOldCursor(), 1);
+                    while (var7.hasNext()) {
+                        Integer a = (Integer) var7.next();
+                        if (a < craftingSize) {
+                            alteredCrafting = true;
+                            break;
                         }
+                    }
+
+                    if (alteredCrafting) {
+                        this.bbHandleInventory(event, topInventory, event.getOldCursor(), 1);
                     }
                 }
             }
+
         }
     }
 
     public void bbHandleInventory(InventoryInteractEvent event, Inventory craftInventory, ItemStack isCursor, Integer runnableDelay) {
         HumanEntity hePlayer = event.getWhoClicked();
-        if (hePlayer instanceof Player) {
-            if (BannerUtil.isBannerInInventory(craftInventory)|| isCursor != null && BannerUtil.isBanner(isCursor.getType())) {
+        if (hePlayer instanceof Player
+                && (BannerUtil.isBannerInInventory(craftInventory) || isCursor != null && BannerUtil.isBanner(isCursor.getType()))) {
                 this.plugin.debug("Calling Runnnable delay: " + runnableDelay);
                 (new BetterBannerRunnable(this.plugin, (Player) event.getWhoClicked())).runTaskLater(this.plugin, (long) runnableDelay);
-            }
         }
     }
 }
