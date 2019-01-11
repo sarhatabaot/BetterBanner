@@ -1,0 +1,9 @@
+name: BetterBanner
+main: com.netrust.betterBanner.BetterBanner
+version: 0.1.7
+authors: [jootunk, sarhatabaot]
+api-version: 1.13
+commands:
+  betterbanner:
+    description: BetterBanner command, reload, debug and version
+    
