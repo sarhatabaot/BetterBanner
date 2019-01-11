@@ -1,4 +1,4 @@
-package com.netrust.betterBanner;
+package com.netrust.betterbanner;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

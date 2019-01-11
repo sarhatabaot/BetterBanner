@@ -1,4 +1,4 @@
-package com.netrust.betterBanner;
+package com.netrust.betterbanner;
 
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;

@@ -1,4 +1,4 @@
-package com.netrust.betterBanner;
+package com.netrust.betterbanner;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
