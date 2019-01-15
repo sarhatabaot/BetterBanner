@@ -63,7 +63,7 @@ public class BetterBannerRunnable extends BukkitRunnable {
                             } else {
                                 this.plugin.debug("valid output to handle");
                                 ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
-                                wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1)); //TODO config: default banner to use
+                                wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
                                 isSingleBanner = wbInventory.getResult();
                                 wbInventory.setItem(deepBannerSlot, isDeepBanner);
                                 if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
