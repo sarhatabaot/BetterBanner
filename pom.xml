@@ -60,7 +60,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>${finalName}</finalName>
 
         <resources>
             <!-- Resource filtering; use Maven version in plugin.yml -->
