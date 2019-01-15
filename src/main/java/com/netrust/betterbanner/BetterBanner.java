@@ -23,6 +23,9 @@ public class BetterBanner extends JavaPlugin {
         this.logger = this.getLogger();
         Config.load(this);
         new BetterBannerListener(this);
+
+        Metrics metrics = new Metrics(this);
+        
         this.debug("BetterBanner is started");
     }
 

@@ -5,5 +5,6 @@ authors: [jootunk, sarhatabaot]
 api-version: 1.13
 commands:
   betterbanner:
-    description: BetterBanner command, reload, debug and version
+    usage: /<command> <reload|debug|version>
+    description: BetterBanner
     

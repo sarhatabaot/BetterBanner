@@ -34,8 +34,8 @@ public class BetterBannerRunnable extends BukkitRunnable {
                     Integer craftingSize = wbInventory.getSize();
                     if (craftingSize == 5 || craftingSize == 10) {
                         Integer deepBannerSlot = 0;
-                        Integer banners = 0;
-                        Integer nonBanners = 0;
+                        int banners = 0;
+                        int nonBanners = 0;
 
                         ItemStack isSingleBanner;
                         for(Integer i = 1; i < craftingSize; i = i + 1) {
