@@ -1,6 +1,6 @@
 name: BetterBanner
 main: com.netrust.betterbanner.BetterBanner
-version: 0.1.7
+version: ${project.version}
 authors: [jootunk, sarhatabaot]
 api-version: 1.13
 commands:
