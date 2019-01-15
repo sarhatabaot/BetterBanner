@@ -15,22 +15,23 @@ import java.util.logging.Logger;
  * @author sarhatabaot
  */
 public class BetterBanner extends JavaPlugin {
-    Logger logger;
-    boolean debugMode = false;
+    private Logger logger;
+    private boolean debugMode = false;
 
-    public BetterBanner() {
-    }
 
     public void onEnable() {
         this.logger = this.getLogger();
         Config.load(this);
         new BetterBannerListener(this);
+
+        Metrics metrics = new Metrics(this);
+
         this.debug("BetterBanner is started");
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("try /betterbanner < reload | debug | ver >");
+            sender.sendMessage("Try /betterbanner < reload | debug | ver >");
         } else if (args[0].equalsIgnoreCase("ver")) {
             sender.sendMessage("BetterBanner version " + this.getDescription().getVersion() + " by " + this.getDescription().getAuthors());
         } else if (args[0].equalsIgnoreCase("reload") && sender.isOp()) {

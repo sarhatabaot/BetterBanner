@@ -34,8 +34,8 @@ public class BetterBannerRunnable extends BukkitRunnable {
                     Integer craftingSize = wbInventory.getSize();
                     if (craftingSize == 5 || craftingSize == 10) {
                         Integer deepBannerSlot = 0;
-                        Integer banners = 0;
-                        Integer nonBanners = 0;
+                        int banners = 0;
+                        int nonBanners = 0;
 
                         ItemStack isSingleBanner;
                         for(Integer i = 1; i < craftingSize; i = i + 1) {
@@ -63,7 +63,7 @@ public class BetterBannerRunnable extends BukkitRunnable {
                             } else {
                                 this.plugin.debug("valid output to handle");
                                 ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
-                                wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1)); //TODO config: default banner to use
+                                wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
                                 isSingleBanner = wbInventory.getResult();
                                 wbInventory.setItem(deepBannerSlot, isDeepBanner);
                                 if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
