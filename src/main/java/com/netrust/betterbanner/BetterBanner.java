@@ -25,7 +25,7 @@ public class BetterBanner extends JavaPlugin {
         new BetterBannerListener(this);
 
         Metrics metrics = new Metrics(this);
-        
+
         this.debug("BetterBanner is started");
     }
 
