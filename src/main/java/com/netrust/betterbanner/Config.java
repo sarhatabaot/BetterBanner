@@ -14,6 +14,10 @@ public class Config {
     private static Integer permAdvanced = 0;
     private static Integer permCopy = 0;
 
+    private Config() {
+        throw new IllegalStateException("Config class");
+    }
+
     public static void load(BetterBanner plugin) {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
@@ -46,7 +50,6 @@ public class Config {
         } else {
             permCopy = 0;
         }
-
         plugin.getLogger().info("Config loaded: d: " + permDefault + " b:" + permBasic + " i:" + permIntermediate + " a:" + permAdvanced + " copy:" + permCopy);
     }
 
@@ -81,27 +84,27 @@ public class Config {
     public static int copyMax(Player p) {
         if (copyAll()) {
             return 999;
-        } else {
-            if (copyPerm()) {
-                if (p.hasPermission("betterbanner.unlimited")) {
-                    return 999;
-                }
-
-                if (p.hasPermission("betterbanner.advanced")) {
-                    return maxAdvanced();
-                }
-
-                if (p.hasPermission("betterbanner.intermediate")) {
-                    return maxIntermediate();
-                }
-
-                if (p.hasPermission("betterbanner.basic")) {
-                    return maxBasic();
-                }
+        }
+        if (copyPerm()) {
+            if (p.hasPermission("betterbanner.unlimited")) {
+                return 999;
             }
 
-            return maxDefault();
+            if (p.hasPermission("betterbanner.advanced")) {
+                return maxAdvanced();
+            }
+
+            if (p.hasPermission("betterbanner.intermediate")) {
+                return maxIntermediate();
+            }
+
+            if (p.hasPermission("betterbanner.basic")) {
+                return maxBasic();
+            }
         }
+
+        return maxDefault();
+
     }
 
     public static int createMax(Player p) {
