@@ -1,6 +1,8 @@
 package com.netrust.betterbanner;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -14,11 +16,12 @@ import java.util.logging.Logger;
 /**
  * @author sarhatabaot
  */
-public class BetterBanner extends JavaPlugin {
+public class BetterBanner extends JavaPlugin implements CommandExecutor {
     private Logger logger;
     private boolean debugMode = false;
 
 
+    @Override
     public void onEnable() {
         this.logger = this.getLogger();
         Config.load(this);
@@ -29,6 +32,7 @@ public class BetterBanner extends JavaPlugin {
         this.debug("BetterBanner is started");
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
             sender.sendMessage("Try /betterbanner < reload | debug | ver >");
@@ -47,7 +51,7 @@ public class BetterBanner extends JavaPlugin {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        ArrayList<String> commands = new ArrayList<String>();
+        ArrayList<String> commands = new ArrayList<>();
         if(command.getName().equalsIgnoreCase("betterbanner")){
             if(sender.isOp()) {
                 commands.add("reload");
