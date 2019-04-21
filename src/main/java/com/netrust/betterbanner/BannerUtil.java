@@ -11,6 +11,10 @@ import java.util.List;
  * @author sarhatabaot
  */
 public class BannerUtil {
+    private BannerUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static List<Material> banners = createBannerList();
     public static boolean isBannerInInventory(Inventory inventory){
         for (Material material: banners){
@@ -25,7 +29,7 @@ public class BannerUtil {
     }
 
     private static List<Material> createBannerList(){
-        ArrayList<Material> list = new ArrayList<Material>();
+        ArrayList<Material> list = new ArrayList<>();
         list.add(Material.BLACK_BANNER);
         list.add(Material.BLUE_BANNER);
         list.add(Material.BROWN_BANNER);
