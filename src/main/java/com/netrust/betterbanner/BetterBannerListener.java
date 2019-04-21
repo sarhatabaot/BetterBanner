@@ -115,11 +115,9 @@ public class BetterBannerListener implements Listener {
             if (craftingSize == 10 || craftingSize == 5) {
                 Set<Integer> slotsEffected = event.getRawSlots();
                 boolean alteredCrafting = false;
-                Iterator var7 = slotsEffected.iterator();
 
-                while (var7.hasNext()) {
-                    Integer a = (Integer) var7.next();
-                    if (a < craftingSize) {
+                for(Integer a: slotsEffected){
+                    if(a < craftingSize){
                         alteredCrafting = true;
                         break;
                     }
