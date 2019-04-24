@@ -11,8 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * @author sarhatabaot
@@ -33,63 +31,67 @@ public class BetterBannerListener implements Listener {
         }
         Integer runnableDelay = 1;
         Inventory clickedInv = event.getClickedInventory();
-        if (clickedInv instanceof CraftingInventory) {
-            int invSize = clickedInv.getSize();
-            if (event.getSlot() == 0) {
-                this.plugin.debug("-------- Player clicked the output slot of a crafting window");
-                if (!this.plugin.isMyOutput(clickedInv)) {
-                    this.plugin.debug("Not our banner ... let the system handle");
-                    return;
-                }
+        if (!(clickedInv instanceof CraftingInventory)) {
+            plugin.debug("Inventory isn't CraftingInventory");
+            return;
+        }
 
-                if (getBannerAmount(clickedInv) > 1) {
-                    this.plugin.debug("This is a copy of a deep banner ... let system handle it");
-                    return;
-                }
+        int invSize = clickedInv.getSize();
+        if (event.getSlot() == 0) {
+            this.plugin.debug("-------- Player clicked the output slot of a crafting window");
+            if (!this.plugin.isMyOutput(clickedInv)) {
+                this.plugin.debug("Not our banner ... let the system handle");
+                return;
+            }
 
-                if (invSize != 10) {
-                    this.plugin.debug("**This should not happen, 2x2 crafting and our banner?");
-                    return;
-                }
+            if (getBannerAmount(clickedInv) > 1) {
+                this.plugin.debug("This is a copy of a deep banner ... let system handle it");
+                return;
+            }
 
-                this.plugin.debug("The output clicked is our creation");
-                if (event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
-                    this.plugin.debug("Remove cancelled, player's cursor is not empty");
-                    event.setCancelled(true);
-                    return;
-                }
+            if (invSize != 10) {
+                this.plugin.debug("**This should not happen, 2x2 crafting and our banner?");
+                return;
+            }
 
-                this.plugin.debug("We are handling this craft...item->cursor, crafting->each-1");
-                event.setCurrentItem(clickedInv.getItem(0));
-                clickedInv.clear(0);
+            this.plugin.debug("The output clicked is our creation");
+            if (event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
+                this.plugin.debug("Remove cancelled, player's cursor is not empty");
+                event.setCancelled(true);
+                return;
+            }
 
-                for (int i = 1; i < 10; i = i + 1) {
-                    ItemStack oneStack = clickedInv.getItem(i);
-                    if (oneStack != null && oneStack.getAmount() > 0) {
-                        if (oneStack.getAmount() > 1) {
-                            oneStack.setAmount(oneStack.getAmount() - 1);
-                        } else {
-                            clickedInv.clear(i);
-                        }
+            this.plugin.debug("We are handling this craft...item->cursor, crafting->each-1");
+            event.setCurrentItem(clickedInv.getItem(0));
+            clickedInv.clear(0);
+
+            for (int i = 1; i < 10; i = i + 1) {
+                ItemStack oneStack = clickedInv.getItem(i);
+                if (oneStack != null && oneStack.getAmount() > 0) {
+                    if (oneStack.getAmount() > 1) {
+                        oneStack.setAmount(oneStack.getAmount() - 1);
+                    } else {
+                        clickedInv.clear(i);
                     }
                 }
-
-                event.setCancelled(true);
-                runnableDelay = 3;
-            } else if (invSize != 10) {
-                this.plugin.debug("2x2 entry ... place something, lets continue");
             }
 
-            if (event.getClick() == ClickType.NUMBER_KEY) {
-                this.bbHandleInventory(event, clickedInv, event.getWhoClicked().getInventory().getItem(event.getHotbarButton()), runnableDelay);
-            } else {
-                this.bbHandleInventory(event, clickedInv, event.getCursor(), runnableDelay);
-            }
-
+            event.setCancelled(true);
+            runnableDelay = 3;
+        } else if (invSize != 10) {
+            this.plugin.debug("2x2 entry ... place something, lets continue");
         }
+
+        if (event.getClick() == ClickType.NUMBER_KEY) {
+            this.bbHandleInventory(event, clickedInv, event.getWhoClicked().getInventory().getItem(event.getHotbarButton()), runnableDelay);
+        } else {
+            this.bbHandleInventory(event, clickedInv, event.getCursor(), runnableDelay);
+        }
+
+
     }
 
-    private int getBannerAmount(Inventory clickedInv){
+    private int getBannerAmount(Inventory clickedInv) {
         int banners = 0;
         int invSize = clickedInv.getSize();
 
@@ -109,30 +111,32 @@ public class BetterBannerListener implements Listener {
         }
 
         Inventory topInventory = event.getInventory();
-        if (topInventory.getType() == InventoryType.WORKBENCH || topInventory.getType() == InventoryType.CRAFTING) {
+        if (topInventory.getType() != InventoryType.LOOM){
+            plugin.debug("Inventory isn't the correct type.");
+            return;
+        }
 
-            Integer craftingSize = topInventory.getSize();
-            if (craftingSize == 10 || craftingSize == 5) {
-                Set<Integer> slotsEffected = event.getRawSlots();
-                boolean alteredCrafting = false;
 
-                for(Integer a: slotsEffected){
-                    if(a < craftingSize){
-                        alteredCrafting = true;
-                        break;
-                    }
+        Integer craftingSize = topInventory.getSize();
+        if (craftingSize == 10 || craftingSize == 5) {
+            boolean alteredCrafting = false;
+
+            for (Integer a : event.getRawSlots()) {
+                if (a < craftingSize) {
+                    alteredCrafting = true;
+                    break;
                 }
+            }
 
-                if (alteredCrafting) {
-                    this.bbHandleInventory(event, topInventory, event.getOldCursor(), 1);
-                }
+            if (alteredCrafting) {
+                this.bbHandleInventory(event, topInventory, event.getOldCursor(), 1);
             }
         }
 
 
     }
 
-    public void bbHandleInventory(InventoryInteractEvent event, Inventory craftInventory, ItemStack isCursor, Integer runnableDelay) {
+    private void bbHandleInventory(InventoryInteractEvent event, Inventory craftInventory, ItemStack isCursor, Integer runnableDelay) {
         HumanEntity hePlayer = event.getWhoClicked();
         if (hePlayer instanceof Player
                 && (BannerUtil.isBannerInInventory(craftInventory) || isCursor != null && BannerUtil.isBanner(isCursor.getType()))) {

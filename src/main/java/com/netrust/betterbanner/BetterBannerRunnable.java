@@ -33,7 +33,8 @@ public class BetterBannerRunnable extends BukkitRunnable {
         plugin.debug("Runnable running");
 
         InventoryView playerOpenInv = this.player.getOpenInventory();
-        if (playerOpenInv.getType() == InventoryType.WORKBENCH || playerOpenInv.getType() == InventoryType.CRAFTING){
+
+        if (playerOpenInv.getType() == InventoryType.LOOM) {
             CraftingInventory wbInventory = (CraftingInventory) playerOpenInv.getTopInventory();
 
             Integer craftingSize = wbInventory.getSize();
