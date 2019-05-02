@@ -40,7 +40,7 @@ class BannerUtilTest {
     }
 
     private static List<Material> createBannerList(){
-        ArrayList<Material> list = new ArrayList<Material>();
+        ArrayList<Material> list = new ArrayList<>();
         list.add(Material.BLACK_BANNER);
         list.add(Material.BLUE_BANNER);
         list.add(Material.BROWN_BANNER);
