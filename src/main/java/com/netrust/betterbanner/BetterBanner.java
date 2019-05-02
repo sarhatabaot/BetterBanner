@@ -19,12 +19,14 @@ import java.util.logging.Logger;
 public class BetterBanner extends JavaPlugin implements CommandExecutor {
     private Logger logger;
     private boolean debugMode = false;
+    private static BetterBanner instance;
 
 
     @Override
     public void onEnable() {
         this.logger = this.getLogger();
         Config.load(this);
+        instance = this;
         new BetterBannerListener(this);
 
         Metrics metrics = new Metrics(this);
@@ -62,21 +64,13 @@ public class BetterBanner extends JavaPlugin implements CommandExecutor {
         return commands;
     }
 
-    public boolean isMyOutput(Inventory wbInventory) {
-        ItemStack outputStack = wbInventory.getItem(0);
-        if (outputStack != null && BannerUtil.isBanner(outputStack.getType())) {
-            this.debug("isMyOutput found a banner with " + ((BannerMeta)outputStack.getItemMeta()).numberOfPatterns() + " layers in crafting result");
-            return ((BannerMeta)outputStack.getItemMeta()).numberOfPatterns() > 6;
-        } else {
-            this.debug("isMyOutput did not find a banner in the crafting result");
-            return false;
-        }
+    public static BetterBanner getInstance() {
+        return instance;
     }
 
     public void debug(String msg) {
         if (this.debugMode) {
             this.logger.info(msg);
         }
-
     }
 }

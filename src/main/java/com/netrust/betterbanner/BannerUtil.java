@@ -3,6 +3,8 @@ package com.netrust.betterbanner;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +13,12 @@ import java.util.List;
  * @author sarhatabaot
  */
 public class BannerUtil {
+    private static List<Material> banners = createBannerList();
+
     private BannerUtil() {
         throw new IllegalStateException("Utility class");
     }
 
-    private static List<Material> banners = createBannerList();
     public static boolean isBannerInInventory(Inventory inventory){
         for (Material material: banners){
             if(inventory.contains(material))
@@ -47,6 +50,17 @@ public class BannerUtil {
         list.add(Material.WHITE_BANNER);
         list.add(Material.YELLOW_BANNER);
         return list;
+    }
+
+    public static boolean isMyOutput(Inventory wbInventory) {
+        ItemStack outputStack = wbInventory.getItem(0);
+        if (outputStack != null && BannerUtil.isBanner(outputStack.getType())) {
+            BetterBanner.getInstance().debug("isMyOutput found a banner with " + ((BannerMeta)outputStack.getItemMeta()).numberOfPatterns() + " layers in crafting result");
+            return ((BannerMeta)outputStack.getItemMeta()).numberOfPatterns() > 6;
+        } else {
+            BetterBanner.getInstance().debug("isMyOutput did not find a banner in the crafting result");
+            return false;
+        }
     }
 
 }

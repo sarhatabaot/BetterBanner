@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.LoomInventory;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,7 +36,7 @@ public class BetterBannerRunnable extends BukkitRunnable {
         InventoryView playerOpenInv = this.player.getOpenInventory();
 
         if (playerOpenInv.getType() == InventoryType.LOOM) {
-            CraftingInventory wbInventory = (CraftingInventory) playerOpenInv.getTopInventory();
+            CraftingInventory wbInventory = (CraftingInventory) playerOpenInv.getTopInventory(); //TODO
 
             Integer craftingSize = wbInventory.getSize();
             if (craftingSize == 5 || craftingSize == 10) {

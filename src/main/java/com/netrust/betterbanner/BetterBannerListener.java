@@ -6,10 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.LoomInventory;
 
+import static com.netrust.betterbanner.BannerUtil.isMyOutput;
 
 
 /**
@@ -31,15 +32,15 @@ public class BetterBannerListener implements Listener {
         }
         Integer runnableDelay = 1;
         Inventory clickedInv = event.getClickedInventory();
-        if (!(clickedInv instanceof CraftingInventory)) {
-            plugin.debug("Inventory isn't CraftingInventory");
+        if (!(clickedInv instanceof LoomInventory)) {
+            plugin.debug("Inventory isn't LoomInventory");
             return;
         }
 
         int invSize = clickedInv.getSize();
         if (event.getSlot() == 0) {
             this.plugin.debug("-------- Player clicked the output slot of a crafting window");
-            if (!this.plugin.isMyOutput(clickedInv)) {
+            if (!isMyOutput(clickedInv)) {
                 this.plugin.debug("Not our banner ... let the system handle");
                 return;
             }
