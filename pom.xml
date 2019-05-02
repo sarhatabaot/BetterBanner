@@ -74,6 +74,7 @@
                             <shadedPattern>com.netrust.betterbanner</shadedPattern>
                         </relocation>
                     </relocations>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
                 <executions>
                     <execution>
