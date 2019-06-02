@@ -22,15 +22,15 @@ class BannerUtilTest {
     private static ItemStack[] trueContents = {new ItemStack(Material.BLACK_BANNER), new ItemStack(Material.DIRT)};
     private static ItemStack[] falseContents = {new ItemStack(Material.PUMPKIN), new ItemStack(Material.DIRT)};
 
-    /*static {
+    static {
         trueInventory.setContents(trueContents);
         falseInventory.setContents(falseContents);
-    }*/
+    }
 
     @Test
     void isBannerInInventory() {
-        //assertTrue(BannerUtil.isBannerInInventory(trueInventory));
-        //assertFalse(BannerUtil.isBannerInInventory(falseInventory));
+        assertTrue(BannerUtil.isBannerInInventory(trueInventory));
+        assertFalse(BannerUtil.isBannerInInventory(falseInventory));
     }
 
     @Test
