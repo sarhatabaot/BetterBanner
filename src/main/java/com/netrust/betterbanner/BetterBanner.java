@@ -1,5 +1,6 @@
 package com.netrust.betterbanner;
 
+import net.minecraft.server.v1_14_R1.ContainerLoom;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,18 +24,19 @@ public class BetterBanner extends JavaPlugin implements CommandExecutor {
     private boolean debugMode = false;
     private static BetterBanner instance;
 
-
     @Override
     public void onEnable() {
         this.logger = this.getLogger();
         Config.load(this);
         instance = this;
         new BetterBannerListener(this);
+        new LoomListener(this);
 
         Metrics metrics = new Metrics(this);
 
         this.debug("BetterBanner is started");
     }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

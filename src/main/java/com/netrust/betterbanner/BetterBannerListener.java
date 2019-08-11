@@ -1,6 +1,9 @@
 package com.netrust.betterbanner;
 
+import net.minecraft.server.v1_14_R1.InventoryCrafting;
+import net.minecraft.server.v1_14_R1.InventorySubcontainer;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +26,7 @@ public class BetterBannerListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.plugin = plugin;
     }
+
 
     @EventHandler
     public void bbInventoryClickEvent(InventoryClickEvent event) {
