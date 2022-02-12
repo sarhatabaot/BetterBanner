@@ -64,32 +64,34 @@ public class BetterBannerRunnable extends BukkitRunnable {
             return;
         }
 
-        if (nonBanners != 0 && deepBannerSlot != 0) {
-            if (((BannerMeta) wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() >= Config.createMax(this.player)) {
-                this.plugin.debug("Stopping (possible) create banner greater than player limit");
-                return;
-            }
-
-            this.plugin.debug("valid output to handle");
-            ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
-            wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
-            isSingleBanner = wbInventory.getResult();
-            wbInventory.setItem(deepBannerSlot, isDeepBanner);
-            if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
-                BannerMeta metaSingleBanner = (BannerMeta) isSingleBanner.getItemMeta();
-                BannerMeta metaDeepBanner = (BannerMeta) isDeepBanner.getItemMeta();
-                Pattern patternToAdd = metaSingleBanner.getPattern(0);
-                metaDeepBanner.addPattern(patternToAdd);
-                isDeepBanner.setItemMeta(metaDeepBanner);
-                isDeepBanner.setAmount(1);
-                wbInventory.setItem(0, isDeepBanner);
-                this.player.updateInventory();
-                this.plugin.debug("Created a new deeper banner");
-                return;
-            }
-
-            this.plugin.debug("Nothing to output, should be empty");
+        if (nonBanners == 0 || deepBannerSlot == 0) {
+            return;
         }
+
+        if (((BannerMeta) wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() >= Config.createMax(this.player)) {
+            this.plugin.debug("Stopping (possible) create banner greater than player limit");
+            return;
+        }
+
+        this.plugin.debug("valid output to handle");
+        ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
+        wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
+        isSingleBanner = wbInventory.getResult();
+        wbInventory.setItem(deepBannerSlot, isDeepBanner);
+        if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
+            BannerMeta metaSingleBanner = (BannerMeta) isSingleBanner.getItemMeta();
+            BannerMeta metaDeepBanner = (BannerMeta) isDeepBanner.getItemMeta();
+            Pattern patternToAdd = metaSingleBanner.getPattern(0);
+            metaDeepBanner.addPattern(patternToAdd);
+            isDeepBanner.setItemMeta(metaDeepBanner);
+            isDeepBanner.setAmount(1);
+            wbInventory.setItem(0, isDeepBanner);
+            this.player.updateInventory();
+            this.plugin.debug("Created a new deeper banner");
+            return;
+        }
+
+        this.plugin.debug("Nothing to output, should be empty");
 
 
     }
