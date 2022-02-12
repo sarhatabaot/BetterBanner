@@ -85,38 +85,41 @@ public class Config {
     public static int copyMax(Player p) {
         if (copyAll()) {
             return 999;
-        } else {
-            if (copyPerm()) {
-                if (p.hasPermission("betterbanner.unlimited")) {
-                    return 999;
-                }
+        }
 
-                if (p.hasPermission("betterbanner.advanced")) {
-                    return maxAdvanced();
-                }
-
-                if (p.hasPermission("betterbanner.intermediate")) {
-                    return maxIntermediate();
-                }
-
-                if (p.hasPermission("betterbanner.basic")) {
-                    return maxBasic();
-                }
+        if (copyPerm()) {
+            if (p.hasPermission(Permissions.UNLIMITED)) {
+                return 999;
             }
 
-            return maxDefault();
+            if (p.hasPermission(Permissions.ADVANCED)) {
+                return maxAdvanced();
+            }
+
+            if (p.hasPermission(Permissions.INTERMEDIATE)) {
+                return maxIntermediate();
+            }
+
+            if (p.hasPermission(Permissions.BASIC)) {
+                return maxBasic();
+            }
         }
+
+        return maxDefault();
+
     }
 
-    public static int createMax(Player p) {
-        if (p.hasPermission("betterbanner.unlimited")) {
+    public static int createMax(final Player player) {
+        if (player.hasPermission(Permissions.UNLIMITED)) {
             return 999;
-        } else if (p.hasPermission("betterbanner.advanced")) {
-            return maxAdvanced();
-        } else if (p.hasPermission("betterbanner.intermediate")) {
-            return maxIntermediate();
-        } else {
-            return p.hasPermission("betterbanner.basic") ? maxBasic() : maxDefault();
         }
+        if (player.hasPermission(Permissions.ADVANCED)) {
+            return maxAdvanced();
+        }
+        if (player.hasPermission(Permissions.INTERMEDIATE)) {
+            return maxIntermediate();
+        }
+
+        return player.hasPermission(Permissions.BASIC) ? maxBasic() : maxDefault();
     }
 }
