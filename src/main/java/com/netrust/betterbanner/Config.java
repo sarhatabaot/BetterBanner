@@ -14,6 +14,10 @@ public class Config {
     private static Integer permAdvanced = 0;
     private static Integer permCopy = 0;
 
+    private Config() {
+        throw new UnsupportedOperationException();
+    }
+
     public static void load(BetterBanner plugin) {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
