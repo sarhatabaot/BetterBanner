@@ -8,8 +8,6 @@
     <groupId>io.github.sarhatabaot</groupId>
     <version>0.1.7.1</version>
     <properties>
-        <juinit.jupiter.version>5.3.2</juinit.jupiter.version>
-
         <finalName>${project.artifactId}-${project.version}</finalName>
     </properties>
 
@@ -27,25 +25,6 @@
             <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${juinit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${juinit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.23.4</version>
-        </dependency>
     </dependencies>
 
 
@@ -55,7 +34,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <finalName>${finalName}</finalName>
                 </configuration>
@@ -63,7 +42,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.9.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
