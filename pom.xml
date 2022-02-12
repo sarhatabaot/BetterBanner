@@ -17,6 +17,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -36,6 +40,12 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>23.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-paper</artifactId>
+            <version>0.5.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -71,6 +81,14 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.netrust.betterbanner.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>co.aikar.commands</pattern>
+                            <shadedPattern>com.netrust.betterbanner.acf</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>co.aikar.locales</pattern>
+                            <shadedPattern>com.netrust.betterbanner.locales</shadedPattern>
                         </relocation>
                     </relocations>
 
