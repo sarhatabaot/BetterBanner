@@ -10,9 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-/**
- * @author sarhatabaot
- */
 public class BetterBannerRunnable extends BukkitRunnable {
     private final Player player;
     private final BetterBanner plugin;
@@ -22,6 +19,7 @@ public class BetterBannerRunnable extends BukkitRunnable {
         this.player = player;
     }
 
+    @Override
     public void run() {
         this.plugin.debug("Max copy: " + Config.copyMax(this.player));
         this.plugin.debug("Max Create: " + Config.createMax(this.player));
