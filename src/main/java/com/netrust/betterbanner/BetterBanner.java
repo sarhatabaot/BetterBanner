@@ -1,11 +1,13 @@
 package com.netrust.betterbanner;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,14 +19,15 @@ import java.util.logging.Logger;
  * @author sarhatabaot
  */
 public class BetterBanner extends JavaPlugin {
-    private Logger logger;
     private boolean debugMode = false;
 
-
+    @Override
     public void onEnable() {
-        this.logger = this.getLogger();
+
         Config.load(this);
-        new BetterBannerListener(this);
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new BetterBannerListener(this), this);
 
         Metrics metrics = new Metrics(this, 3884);
 
@@ -48,7 +51,7 @@ public class BetterBanner extends JavaPlugin {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        ArrayList<String> commands = new ArrayList<String>();
+        ArrayList<String> commands = new ArrayList<>();
         if(command.getName().equalsIgnoreCase("betterbanner")){
             if(sender.isOp()) {
                 commands.add("reload");
@@ -72,7 +75,7 @@ public class BetterBanner extends JavaPlugin {
 
     public void debug(String msg) {
         if (this.debugMode) {
-            this.logger.info(msg);
+            getLogger().info("DEBUG" + msg);
         }
 
     }
