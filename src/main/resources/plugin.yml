@@ -3,8 +3,3 @@ main: com.netrust.betterbanner.BetterBanner
 version: ${project.version}
 authors: [jootunk, sarhatabaot]
 api-version: 1.13
-commands:
-  betterbanner:
-    usage: /<command> <reload|debug|version>
-    description: BetterBanner
-    
