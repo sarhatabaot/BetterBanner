@@ -1,11 +1,13 @@
 package com.netrust.betterbanner;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,11 @@ public class BetterBanner extends JavaPlugin {
         Config.load(this);
         new BetterBannerListener(this);
 
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 3884);
 
-        this.debug("BetterBanner is started");
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String @NotNull [] args) {
         if (args.length < 1) {
             sender.sendMessage("Try /betterbanner < reload | debug | ver >");
         } else if (args[0].equalsIgnoreCase("ver")) {
