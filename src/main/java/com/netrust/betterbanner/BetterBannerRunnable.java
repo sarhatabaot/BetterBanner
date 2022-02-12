@@ -26,65 +26,73 @@ public class BetterBannerRunnable extends BukkitRunnable {
         this.plugin.debug("Max copy: " + Config.copyMax(this.player));
         this.plugin.debug("Max Create: " + Config.createMax(this.player));
         this.plugin.debug("Runnable running");
-        if (this.player.isOnline()) {
-            InventoryView playerOpenInv = this.player.getOpenInventory();
-            if (playerOpenInv != null && (playerOpenInv.getType() == InventoryType.WORKBENCH || playerOpenInv.getType() == InventoryType.CRAFTING)) {
-                CraftingInventory wbInventory = (CraftingInventory)playerOpenInv.getTopInventory();
-                if (wbInventory != null) {
-                    Integer craftingSize = wbInventory.getSize();
-                    if (craftingSize == 5 || craftingSize == 10) {
-                        Integer deepBannerSlot = 0;
-                        int banners = 0;
-                        int nonBanners = 0;
+        if (!this.player.isOnline())
+            return;
 
-                        ItemStack isSingleBanner;
-                        for(Integer i = 1; i < craftingSize; i = i + 1) {
-                            isSingleBanner = wbInventory.getItem(i);
-                            if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
-                                banners = banners + 1;
-                                if (((BannerMeta)isSingleBanner.getItemMeta()).numberOfPatterns() > 5) {
-                                    deepBannerSlot = i;
-                                }
-                            } else if (isSingleBanner != null && isSingleBanner.getType() != Material.AIR) {
-                                nonBanners = nonBanners + 1;
-                            }
-                        }
+        final InventoryView playerOpenInv = this.player.getOpenInventory();
+        if (!(playerOpenInv.getType() == InventoryType.WORKBENCH || playerOpenInv.getType() == InventoryType.CRAFTING)) {
+            return;
+        }
 
-                        if (banners > 1) {
-                            if (deepBannerSlot > 0 && ((BannerMeta)wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() > Config.copyMax(this.player)) {
-                                this.plugin.debug("Stopping copy above allowed player limit");
-                                wbInventory.clear(0);
-                                this.player.updateInventory();
-                            }
+        final CraftingInventory wbInventory = (CraftingInventory) playerOpenInv.getTopInventory();
+        int craftingSize = wbInventory.getSize();
+        if (!(craftingSize == 5 || craftingSize == 10)) {
+            return;
+        }
 
-                        } else if (nonBanners != 0 && deepBannerSlot != 0) {
-                            if (((BannerMeta)wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() >= Config.createMax(this.player)) {
-                                this.plugin.debug("Stopping (possible) create banner greater than player limit");
-                            } else {
-                                this.plugin.debug("valid output to handle");
-                                ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
-                                wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
-                                isSingleBanner = wbInventory.getResult();
-                                wbInventory.setItem(deepBannerSlot, isDeepBanner);
-                                if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
-                                    BannerMeta metaSingleBanner = (BannerMeta)isSingleBanner.getItemMeta();
-                                    BannerMeta metaDeepBanner = (BannerMeta)isDeepBanner.getItemMeta();
-                                    Pattern patternToAdd = metaSingleBanner.getPattern(0);
-                                    metaDeepBanner.addPattern(patternToAdd);
-                                    isDeepBanner.setItemMeta(metaDeepBanner);
-                                    isDeepBanner.setAmount(1);
-                                    wbInventory.setItem(0, isDeepBanner);
-                                    this.player.updateInventory();
-                                    this.plugin.debug("Created a new deeper banner");
-                                } else {
-                                    this.plugin.debug("Nothing to output, should be empty");
-                                }
+        int deepBannerSlot = 0;
+        int banners = 0;
+        int nonBanners = 0;
 
-                            }
-                        }
-                    }
+        ItemStack isSingleBanner;
+        for (int i = 1; i < craftingSize; i = i + 1) {
+            isSingleBanner = wbInventory.getItem(i);
+            if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
+                banners = banners + 1;
+                if (((BannerMeta) isSingleBanner.getItemMeta()).numberOfPatterns() > 5) {
+                    deepBannerSlot = i;
                 }
+            } else if (isSingleBanner != null && isSingleBanner.getType() != Material.AIR) {
+                nonBanners = nonBanners + 1;
             }
         }
+
+        if (banners > 1) {
+            if (deepBannerSlot > 0 && ((BannerMeta) wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() > Config.copyMax(this.player)) {
+                this.plugin.debug("Stopping copy above allowed player limit");
+                wbInventory.clear(0);
+                this.player.updateInventory();
+            }
+            return;
+        }
+
+        if (nonBanners != 0 && deepBannerSlot != 0) {
+            if (((BannerMeta) wbInventory.getItem(deepBannerSlot).getItemMeta()).numberOfPatterns() >= Config.createMax(this.player)) {
+                this.plugin.debug("Stopping (possible) create banner greater than player limit");
+                return;
+            }
+
+            this.plugin.debug("valid output to handle");
+            ItemStack isDeepBanner = wbInventory.getItem(deepBannerSlot);
+            wbInventory.setItem(deepBannerSlot, new ItemStack(Material.WHITE_BANNER, 1));
+            isSingleBanner = wbInventory.getResult();
+            wbInventory.setItem(deepBannerSlot, isDeepBanner);
+            if (isSingleBanner != null && BannerUtil.isBanner(isSingleBanner.getType())) {
+                BannerMeta metaSingleBanner = (BannerMeta) isSingleBanner.getItemMeta();
+                BannerMeta metaDeepBanner = (BannerMeta) isDeepBanner.getItemMeta();
+                Pattern patternToAdd = metaSingleBanner.getPattern(0);
+                metaDeepBanner.addPattern(patternToAdd);
+                isDeepBanner.setItemMeta(metaDeepBanner);
+                isDeepBanner.setAmount(1);
+                wbInventory.setItem(0, isDeepBanner);
+                this.player.updateInventory();
+                this.plugin.debug("Created a new deeper banner");
+                return;
+            }
+
+            this.plugin.debug("Nothing to output, should be empty");
+        }
+
+
     }
 }
