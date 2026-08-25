@@ -1,10 +1,7 @@
 package com.netrust.betterbanner;
 
-import co.aikar.commands.PaperCommandManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
@@ -12,9 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 /**
  * @author sarhatabaot
@@ -29,8 +24,8 @@ public class BetterBanner extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new BetterBannerListener(this), this);
 
-        PaperCommandManager paperCommandManager = new PaperCommandManager(this);
-        paperCommandManager.registerCommand(new BetterBannerCommand(this));
+        Objects.requireNonNull(getCommand("betterbanner"), "betterbanner command not defined")
+                .setExecutor(new BetterBannerCommand(this));
 
         Metrics metrics = new Metrics(this, 3884);
     }

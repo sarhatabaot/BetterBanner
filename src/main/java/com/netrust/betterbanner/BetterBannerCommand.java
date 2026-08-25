@@ -1,48 +1,69 @@
 package com.netrust.betterbanner;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author sarhatabaot
  */
-
-@CommandAlias("betterbanner")
-@Description("Better banner base command.")
-public class BetterBannerCommand extends BaseCommand {
+public class BetterBannerCommand implements CommandExecutor {
     private final BetterBanner plugin;
 
     public BetterBannerCommand(final BetterBanner plugin) {
         this.plugin = plugin;
     }
 
-    @Default
-    @Subcommand("version")
-    @Description("Show version information")
-    @CommandPermission(Permissions.COMMAND_VERSION)
-    public void onVersion(final @NotNull CommandSender sender) {
-        sender.sendMessage("BetterBanner version " + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors());
+    @Override
+    public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command, final @NotNull String label,
+                             final @NotNull String[] args) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("ver")) {
+            return this.onVersion(sender);
+        }
+        if (args[0].equalsIgnoreCase("debug")) {
+            return this.onDebug(sender);
+        }
+        if (args[0].equalsIgnoreCase("reload")) {
+            return this.onReload(sender);
+        }
+
+        sender.sendMessage(ChatColor.RED + "Usage: /" + label + " [version|debug|reload]");
+        return true;
     }
 
-    @Subcommand("debug")
-    @Description("Toggle debug mode.")
-    @CommandPermission(Permissions.COMMAND_DEBUG)
-    public void onDebug(final @NotNull CommandSender sender) {
+    private boolean onVersion(final @NotNull CommandSender sender) {
+        if (!sender.hasPermission(Permissions.COMMAND_VERSION)) {
+            return noPermission(sender);
+        }
+
+        sender.sendMessage("BetterBanner version " + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors());
+        return true;
+    }
+
+    private boolean onDebug(final @NotNull CommandSender sender) {
+        if (!sender.hasPermission(Permissions.COMMAND_DEBUG)) {
+            return noPermission(sender);
+        }
+
         plugin.setDebugMode(!plugin.isDebugMode());
         sender.sendMessage("BetterBanner debug is now " + plugin.isDebugMode());
+        return true;
     }
 
-    @Subcommand("reload")
-    @Description("Reload the configuration.")
-    @CommandPermission(Permissions.COMMAND_RELOAD)
-    public void onReload(final @NotNull CommandSender sender) {
+    private boolean onReload(final @NotNull CommandSender sender) {
+        if (!sender.hasPermission(Permissions.COMMAND_RELOAD)) {
+            return noPermission(sender);
+        }
+
         Config.load(plugin);
         sender.sendMessage("BetterBanner config reloaded");
+        return true;
+    }
+
+    private boolean noPermission(final @NotNull CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+        return true;
     }
 }
