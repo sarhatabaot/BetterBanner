@@ -1,31 +1,18 @@
-# Under no circumstances will this prohibit players
-# from creating banners that are normal in vanilla
+# Per-tier pattern caps for the loom.
 #
+# Permission nodes:
+#   betterbanner.basic        — up to `basic` layers
+#   betterbanner.intermediate — up to `intermediate` layers
+#   betterbanner.advanced     — up to `advanced` layers
+#   betterbanner.unlimited    — no cap
 #
-# Permission usage:
-#   betterbanner.basic        - make up to 'basic' layers
-#   betterbanner.intermediate - make up to 'intermediate' layers
-#   betterbanner.advanced     - make up to 'advancded' layers
-#   betterbanner.unlimited    - what it says
-#
-#
-# Commands:
-#   /betterbanner reload      - reloads the config
-#   /betterbanner debug       - crap ton msgs in server log
-#   /betterbanner ver         - shows version number
-#
-#
-# copying of deep banners.
-#   none = no copying of 7+ layer banners, keeps them special
-#   perm = can copy banners up to their permission to create
-#   all  = everyone can copy all banners
-#
-copy: none
-#
-#
-# layer limits for perms. Can not stop vanilla crafting.
+# The `default` cap applies to players with no BetterBanner permission.
+# Values are clamped so each tier is at least as high as the previous one.
 #
 default: 6
 basic: 8
 intermediate: 11
 advanced: 15
+
+# Set to true to disable bStats metrics.
+disable-metrics: false

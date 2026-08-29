@@ -3,6 +3,15 @@
 # Maven
 target
 
+# Gradle
+.gradle
+build
+
 # IntelliJ #
 .idea
 *.iml
+
+design.md
+docker
+
+minecraft

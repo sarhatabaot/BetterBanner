@@ -1,4 +1,4 @@
-package com.netrust.betterbanner;
+package net.sarhatabaot.betterbanner;
 
 
 import com.google.common.collect.ImmutableList;
