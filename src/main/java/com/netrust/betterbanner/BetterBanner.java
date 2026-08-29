@@ -1,45 +1,56 @@
 package com.netrust.betterbanner;
 
+import com.netrust.betterbanner.listener.LoomInventoryListener;
+import com.netrust.betterbanner.listener.PlayerListener;
+import com.netrust.betterbanner.loom.LoomService;
+import com.netrust.betterbanner.nms.LoomAdapter;
+import com.netrust.betterbanner.nms.NmsVersions;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * @author sarhatabaot
  */
 public class BetterBanner extends JavaPlugin {
     private boolean debugMode = false;
+    private LoomService loomService;
+    private LoomAdapter loomAdapter;
 
     @Override
     public void onEnable() {
         Config.load(this);
 
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new BetterBannerListener(this), this);
+        // Version detection once, at startup. Per design section 48:
+        // unsupported versions log a warning and disable the loom
+        // feature; the plugin still loads.
+        this.loomAdapter = NmsVersions.detect();
+        this.loomService = new LoomService(loomAdapter, this::debug);
+        getLogger().info("BetterBanner NMS adapter: "
+                + loomAdapter.getClass().getSimpleName()
+                + " (server: " + loomService.serverBukkitVersion() + ")");
 
-        Objects.requireNonNull(getCommand("betterbanner"), "betterbanner command not defined")
-                .setExecutor(new BetterBannerCommand(this));
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new LoomInventoryListener(this, loomService), this);
+        pluginManager.registerEvents(new PlayerListener(this, loomService), this);
+
+        if (getCommand("betterbanner") != null) {
+            getCommand("betterbanner").setExecutor(new BetterBannerCommand(this));
+        } else {
+            getLogger().warning("betterbanner command not defined in plugin.yml");
+        }
 
         Metrics metrics = new Metrics(this, 3884);
     }
 
 
-    public boolean isMyOutput(@NotNull Inventory wbInventory) {
-        ItemStack outputStack = wbInventory.getItem(0);
-        if (outputStack != null && BannerUtil.isBanner(outputStack.getType())) {
-            this.debug("isMyOutput found a banner with " + ((BannerMeta) outputStack.getItemMeta()).numberOfPatterns() + " layers in crafting result");
-            return ((BannerMeta) outputStack.getItemMeta()).numberOfPatterns() > 6;
-        }
+    public LoomService getLoomService() {
+        return loomService;
+    }
 
-        this.debug("isMyOutput did not find a banner in the crafting result");
-        return false;
+    public LoomAdapter getLoomAdapter() {
+        return loomAdapter;
     }
 
     public void debug(String msg) {
@@ -57,3 +68,4 @@ public class BetterBanner extends JavaPlugin {
         this.debugMode = debugMode;
     }
 }
+

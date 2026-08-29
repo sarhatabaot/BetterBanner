@@ -4,3 +4,7 @@
 
 This is a 1.13.X implementation of [BetterBanner](https://www.spigotmc.org/resources/better-banner.16432/). 
 
+
+## Run commands via testing server
+`docker compose run --rm rcon`
+

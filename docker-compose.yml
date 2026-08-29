@@ -1,0 +1,43 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server:java8
+    container_name: betterbanner-test-server
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+    environment:
+      TYPE: SPIGOT
+      VERSION: "1.14.4"
+      EULA: "TRUE"
+
+      DIFFICULTY: normal
+      MODE: survival
+      OPS: ""
+      MEMORY: 2G
+
+      # RCON
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "betterbanner-dev"
+      RCON_PORT: "25575"
+
+    volumes:
+      - mc-data:/data
+      - ./docker/plugins:/data/plugins
+
+  rcon:
+    image: itzg/rcon-cli
+    depends_on:
+      - minecraft
+    environment:
+      RCON_HOST: minecraft
+      RCON_PORT: "25575"
+      RCON_PASSWORD: "betterbanner-dev"
+    stdin_open: true
+    tty: true
+    profiles:
+      - tools
+
+volumes:
+  mc-data:

@@ -1,5 +1,7 @@
 package com.netrust.betterbanner;
 
+import com.netrust.betterbanner.nms.LoomAdapter;
+import com.netrust.betterbanner.nms.NoOpLoomAdapter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,19 +19,19 @@ public class BetterBannerCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command, final @NotNull String label,
-                             final @NotNull String[] args) {
+    public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command,
+                             final @NotNull String label, final @NotNull String[] args) {
         if (args.length == 0 || args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("ver")) {
             return this.onVersion(sender);
         }
         if (args[0].equalsIgnoreCase("debug")) {
-            return this.onDebug(sender);
+            return this.onDebug(sender, args);
         }
         if (args[0].equalsIgnoreCase("reload")) {
             return this.onReload(sender);
         }
 
-        sender.sendMessage(ChatColor.RED + "Usage: /" + label + " [version|debug|reload]");
+        sender.sendMessage(ChatColor.RED + "Usage: /" + label + " [version|debug [nms|adapter]|reload]");
         return true;
     }
 
@@ -42,13 +44,56 @@ public class BetterBannerCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean onDebug(final @NotNull CommandSender sender) {
+    private boolean onDebug(final @NotNull CommandSender sender, final @NotNull String[] args) {
         if (!sender.hasPermission(Permissions.COMMAND_DEBUG)) {
             return noPermission(sender);
         }
 
+        if (args.length >= 2 && args[1].equalsIgnoreCase("nms")) {
+            return this.onDebugNms(sender);
+        }
+        if (args.length >= 2 && args[1].equalsIgnoreCase("adapter")) {
+            return this.onDebugAdapter(sender);
+        }
+
         plugin.setDebugMode(!plugin.isDebugMode());
         sender.sendMessage("BetterBanner debug is now " + plugin.isDebugMode());
+        return true;
+    }
+
+    private boolean onDebugNms(final @NotNull CommandSender sender) {
+        if (!sender.hasPermission(Permissions.COMMAND_DEBUG_NMS)) {
+            return noPermission(sender);
+        }
+        sender.sendMessage(ChatColor.AQUA + "Dumping NMS class layout...");
+        LoomAdapter adapter = plugin.getLoomAdapter();
+        if (adapter == null) {
+            sender.sendMessage(ChatColor.RED + "No LoomAdapter available (plugin not enabled?)");
+            return true;
+        }
+        adapter.dumpDiagnostics(sender);
+        sender.sendMessage(ChatColor.AQUA + "End of NMS dump.");
+        return true;
+    }
+
+    private boolean onDebugAdapter(final @NotNull CommandSender sender) {
+        if (!sender.hasPermission(Permissions.COMMAND_DEBUG_NMS)) {
+            return noPermission(sender);
+        }
+        LoomAdapter adapter = plugin.getLoomAdapter();
+        if (adapter == null) {
+            sender.sendMessage(ChatColor.RED + "No LoomAdapter available (plugin not enabled?)");
+            return true;
+        }
+        sender.sendMessage(ChatColor.AQUA + "Active LoomAdapter: " + ChatColor.WHITE + adapter.getClass().getName());
+        sender.sendMessage(ChatColor.AQUA + "Server bukkit version: " + ChatColor.WHITE
+                + plugin.getLoomService().serverBukkitVersion());
+        if (adapter instanceof NoOpLoomAdapter) {
+            sender.sendMessage(ChatColor.YELLOW + "Adapter is a no-op (server version not supported).");
+            sender.sendMessage(ChatColor.YELLOW + "Run /betterbanner debug nms for a class layout dump.");
+        } else {
+            sender.sendMessage(ChatColor.AQUA + "Run /betterbanner debug nms for a class layout dump.");
+        }
         return true;
     }
 

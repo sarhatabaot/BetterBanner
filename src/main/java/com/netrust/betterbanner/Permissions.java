@@ -14,4 +14,12 @@ public class Permissions {
     public static final String COMMAND_RELOAD = "betterbanner.reload";
     public static final String COMMAND_DEBUG = "betterbanner.debug";
     public static final String COMMAND_VERSION = "betterbanner.version";
+
+    /**
+     * Permission to use {@code /betterbanner debug nms} — dumps the live NMS
+     * class layout (declared fields + methods of {@code ContainerLoom} and
+     * {@code Container}). More sensitive than the plain {@code debug}
+     * toggle because it reveals NMS internals to anyone with the node.
+     */
+    public static final String COMMAND_DEBUG_NMS = "betterbanner.debug.nms";
 }

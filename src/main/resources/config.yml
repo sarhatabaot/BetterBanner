@@ -1,3 +1,8 @@
+# Per-tier pattern caps apply at the loom. The vanilla six-pattern limit
+# remains untouched: a player with no permission node still cannot exceed
+# 6 patterns. The keys below raise the cap to 'basic', 'intermediate',
+# 'advanced', or effectively unlimited per-player.
+#
 # Under no circumstances will this prohibit players
 # from creating banners that are normal in vanilla
 #
