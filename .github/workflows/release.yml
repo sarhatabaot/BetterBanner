@@ -1,14 +1,6 @@
 # Builds the shaded plugin jar for a manually-created GitHub Release,
 # uploads that jar to the same release, and (optionally) publishes the
 # same file to Modrinth.
-#
-# Required secrets (only used by the Modrinth step, currently disabled):
-#   MODRINTH_TOKEN       - https://modrinth.com/settings/pats (scope: versions:write)
-#   MODRINTH_PROJECT_ID  - the Modrinth project id (slug or numeric id)
-#
-# To enable Modrinth publishing later, uncomment the entire "Publish to
-# Modrinth" step below and add the two secrets above to the repository.
-
 name: Release
 
 on:
@@ -63,25 +55,20 @@ jobs:
           fail_on_unmatched_files: true
           files: ${{ steps.release_meta.outputs.jar_path }}
 
-      # ------------------------------------------------------------------------
-      # Modrinth publishing is intentionally disabled. Uncomment this entire
-      # step when the project has a Modrinth listing, and make sure the
-      # MODRINTH_TOKEN and MODRINTH_PROJECT_ID secrets are configured.
-      # ------------------------------------------------------------------------
-      # - name: Publish to Modrinth
-      #   if: ${{ false }}
-      #   uses: cloudnode-pro/modrinth-publish@v2
-      #   with:
-      #     project: ${{ secrets.MODRINTH_PROJECT_ID }}
-      #     token: ${{ secrets.MODRINTH_TOKEN }}
-      #     files: ${{ steps.release_meta.outputs.jar_path }}
-      #     version: ${{ steps.release_meta.outputs.version }}
-      #     channel: release
-      #     changelog: ${{ github.event.release.body }}
-      #     loaders: |-
-      #       bukkit
-      #       spigot
-      #       paper
-      #       purpur
-      #     game-versions: 1.14 - 26
-      #     environment: dedicated_server_only
+      - name: Publish to Modrinth
+        if: ${{ false }}
+        uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          project: ${{ secrets.MODRINTH_PROJECT_ID }}
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          files: ${{ steps.release_meta.outputs.jar_path }}
+          version: ${{ steps.release_meta.outputs.version }}
+          channel: release
+          changelog: ${{ github.event.release.body }}
+          loaders: |-
+            bukkit
+            spigot
+            paper
+            purpur
+          game-versions: 1.14 - 26
+          environment: dedicated_server_only
