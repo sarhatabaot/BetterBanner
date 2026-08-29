@@ -2,7 +2,6 @@ package com.netrust.betterbanner.banner;
 
 import com.netrust.betterbanner.BannerUtil;
 import com.netrust.betterbanner.Config;
-import com.netrust.betterbanner.Permissions;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,17 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generic, version-agnostic banner logic. Per design §11 / §62, this is the
- * only place that knows how a banner works; NMS code is isolated in
- * {@code com.netrust.betterbanner.nms}.
- *
- * <p>All methods on this class operate on Bukkit's public API. NMS access
- * lives elsewhere and feeds us {@link ItemStack}s through {@link
- * com.netrust.betterbanner.loom.LoomState}.
+ * Version-agnostic banner logic.
  */
 public final class BannerService {
 
-    /** Vanilla limit. Per design §38: "5 → 6 remains vanilla". */
+    /** Vanilla limit: 6 patterns. */
     public static final int VANILLA_MAX_PATTERNS = 6;
 
     private BannerService() {
@@ -50,9 +43,7 @@ public final class BannerService {
     }
 
     /**
-     * Produce a deep-clone of the banner that preserves all metadata (display
-     * name, lore, item flags, custom NBT, etc.) — per design §36, only the
-     * pattern list is allowed to change.
+     * Produce a clone of the banner that preserves all metadata.
      */
     @Nullable
     public static ItemStack cloneBanner(@Nullable ItemStack stack) {
@@ -81,30 +72,15 @@ public final class BannerService {
     }
 
     /**
-     * Per-player pattern cap, preserving the per-tier configuration that
-     * existed in the pre-1.14 BetterBanner. Unchanged in semantics from the
-     * old {@code Config.createMax}.
+     * Per-player pattern cap.
      */
     public static int getMaxForPlayer(@NotNull Player player) {
-        if (player.hasPermission(Permissions.UNLIMITED)) {
-            return 999;
-        }
-        if (player.hasPermission(Permissions.ADVANCED)) {
-            return Config.maxAdvanced();
-        }
-        if (player.hasPermission(Permissions.INTERMEDIATE)) {
-            return Config.maxIntermediate();
-        }
-        if (player.hasPermission(Permissions.BASIC)) {
-            return Config.maxBasic();
-        }
-        return Config.maxDefault();
+        return Config.maxForPlayer(player);
     }
 
     /**
      * Returns {@code true} if {@code currentCount} is at or beyond
-     * {@code maxForPlayer}. Per design §70, reaching the cap mirrors vanilla
-     * behavior at the limit: no further valid output.
+     * {@code maxForPlayer}.
      */
     public static boolean isAtOrAboveCap(final int currentCount, final int maxForPlayer) {
         return currentCount >= maxForPlayer;

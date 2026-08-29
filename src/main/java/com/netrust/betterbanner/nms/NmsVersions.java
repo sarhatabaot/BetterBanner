@@ -7,13 +7,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Registry and factory for {@link LoomAdapter} instances.
  *
- * <p>Per design §48, version detection happens once at plugin startup.
- * Unsupported versions produce a graceful fallback rather than crashing.
- *
- * <p><b>ProtocolLib auto-detection</b>: if ProtocolLib is present on the
- * server, {@link #detect(Plugin)} returns a {@link ProtocolLibLoomAdapter}
- * that smoothes out the visual flicker through packet interception.
- * Otherwise a plain {@link BukkitLoomAdapter} is returned.
+ * <p><b>ProtocolLib auto-detection</b>: if ProtocolLib is present,
+ * returns a {@link ProtocolLibLoomAdapter} that provides a seamless
+ * experience through packet interception. Otherwise falls back to
+ * {@link BukkitLoomAdapter}.
  */
 public final class NmsVersions {
 

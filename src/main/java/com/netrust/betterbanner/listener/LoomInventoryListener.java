@@ -87,9 +87,7 @@ public final class LoomInventoryListener implements Listener {
         plugin.debug("LoomInventoryListener: drag by " + player.getName());
     }
 
-    /**
-     * Defensive helper: the loom shows up as {@code LOOM} in 1.14+ Bukkit.
-     */
+    /** Identifies loom inventory type. */
     private static boolean isLoom(@Nullable InventoryType type) {
         return type == InventoryType.LOOM;
     }

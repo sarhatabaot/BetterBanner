@@ -9,8 +9,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * <p>The {@code result} is the actual item that should be placed in the loom
  * output slot. The {@code capExceeded} flag is set when the player attempted
- * to create a banner beyond their configured pattern cap; in that case the
- * result will be {@code null} (vanilla behavior at the limit) per design §70.
+ * to create a banner beyond their configured pattern cap.
  */
 public final class BannerResult {
 

@@ -2,130 +2,78 @@ package com.netrust.betterbanner;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
+import org.jetbrains.annotations.NotNull;
 
 /**
- * @author sarhatabaot
+ * Per-tier banner pattern caps, loaded from {@code config.yml} once at
+ * startup and on {@code /betterbanner reload}.
  */
-public class Config {
-    private static Integer permBasic = 0;
-    private static Integer permDefault = 0;
-    private static Integer permIntermediate = 0;
-    private static Integer permAdvanced = 0;
-    private static Integer permCopy = 0;
-    private static boolean disableMetrics = false;
+public final class Config {
+
+    private static final int UNLIMITED = 999;
+    private static final int VANILLA_MIN = 6;
+
+    private static int maxDefault = VANILLA_MIN;
+    private static int maxBasic = 8;
+    private static int maxIntermediate = 11;
+    private static int maxAdvanced = 15;
+    private static boolean disableMetrics;
 
     private Config() {
         throw new UnsupportedOperationException();
     }
 
-    public static void load(BetterBanner plugin) {
+    /**
+     * Load (or reload) configuration from disk.
+     */
+    public static void load(@NotNull BetterBanner plugin) {
         plugin.saveDefaultConfig();
-        plugin.reloadConfig();
         FileConfiguration config = plugin.getConfig();
-        permDefault = config.getInt("default", 6);
-        if (permDefault < 6) {
-            permDefault = 6;
-        }
 
-        permBasic = config.getInt("basic", 8);
-        if (permBasic < 7) {
-            permBasic = 7;
-        }
-
-        permIntermediate = config.getInt("intermediate", 11);
-        if (permIntermediate < permBasic) {
-            permIntermediate = permBasic;
-        }
-
-        permAdvanced = config.getInt("advanced", 15);
-        if (permAdvanced < permIntermediate) {
-            permAdvanced = permIntermediate;
-        }
-
-        String copy = config.getString("copy", "none");
-        if (copy.equalsIgnoreCase("perm")) {
-            permCopy = 1;
-        } else if (copy.equalsIgnoreCase("all")) {
-            permCopy = 2;
-        } else {
-            permCopy = 0;
-        }
-
+        maxDefault = clampFloor(config.getInt("default", VANILLA_MIN), VANILLA_MIN);
+        maxBasic = clampFloor(config.getInt("basic", 8), maxDefault + 1);
+        maxIntermediate = clampFloor(config.getInt("intermediate", 11), maxBasic);
+        maxAdvanced = clampFloor(config.getInt("advanced", 15), maxIntermediate);
         disableMetrics = config.getBoolean("disable-metrics", false);
-        plugin.getLogger().info("Config loaded: d: " + permDefault + " b:" + permBasic + " i:" + permIntermediate + " a:" + permAdvanced + " copy:" + permCopy);
+
+        plugin.getLogger().info("Config loaded: default=" + maxDefault
+                + " basic=" + maxBasic + " intermediate=" + maxIntermediate
+                + " advanced=" + maxAdvanced);
     }
 
-    public static boolean isDisableMetrics() {
-        return disableMetrics;
-    }
+    // --- getters ---
 
-    public static int maxDefault() {
-        return permDefault;
-    }
+    public static int maxDefault() { return maxDefault; }
+    public static int maxBasic() { return maxBasic; }
+    public static int maxIntermediate() { return maxIntermediate; }
+    public static int maxAdvanced() { return maxAdvanced; }
 
-    public static int maxBasic() {
-        return permBasic;
-    }
+    public static boolean isDisableMetrics() { return disableMetrics; }
 
-    public static int maxIntermediate() {
-        return permIntermediate;
-    }
-
-    public static int maxAdvanced() {
-        return permAdvanced;
-    }
-
-    public static boolean copyAll() {
-        return permCopy == 2;
-    }
-
-    public static boolean copyNone() {
-        return permCopy == 0;
-    }
-
-    public static boolean copyPerm() {
-        return permCopy == 1;
-    }
-
-    public static int copyMax(Player p) {
-        if (copyAll()) {
-            return 999;
-        }
-
-        if (copyPerm()) {
-            if (p.hasPermission(Permissions.UNLIMITED)) {
-                return 999;
-            }
-
-            if (p.hasPermission(Permissions.ADVANCED)) {
-                return maxAdvanced();
-            }
-
-            if (p.hasPermission(Permissions.INTERMEDIATE)) {
-                return maxIntermediate();
-            }
-
-            if (p.hasPermission(Permissions.BASIC)) {
-                return maxBasic();
-            }
-        }
-
-        return maxDefault();
-
-    }
-
-    public static int createMax(final Player player) {
+    /**
+     * Return the per-player pattern cap based on their permission nodes.
+     *
+     * <p>Checks {@code betterbanner.unlimited} first, then
+     * {@code betterbanner.advanced}, {@code betterbanner.intermediate},
+     * {@code betterbanner.basic}, falling back to the default cap.
+     */
+    public static int maxForPlayer(@NotNull Player player) {
         if (player.hasPermission(Permissions.UNLIMITED)) {
-            return 999;
+            return UNLIMITED;
         }
         if (player.hasPermission(Permissions.ADVANCED)) {
-            return maxAdvanced();
+            return maxAdvanced;
         }
         if (player.hasPermission(Permissions.INTERMEDIATE)) {
-            return maxIntermediate();
+            return maxIntermediate;
         }
+        if (player.hasPermission(Permissions.BASIC)) {
+            return maxBasic;
+        }
+        return maxDefault;
+    }
 
-        return player.hasPermission(Permissions.BASIC) ? maxBasic() : maxDefault();
+    private static int clampFloor(int value, int floor) {
+        return Math.max(value, floor);
     }
 }

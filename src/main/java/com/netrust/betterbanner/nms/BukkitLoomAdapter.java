@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * {@code CraftInventoryLoom}, which maps indices 0..3 to the banner, dye,
  * pattern-item, and result slots respectively. Reading and writing through
  * {@link Inventory#getItem(int)} / {@link Inventory#setItem(int, ItemStack)}
- * routes to the NMS container on our behalf, which means:
+ * routes to the NMS container, which means:
  * <ul>
  *   <li>writing the banner slot triggers vanilla's {@code slotsChanged()},
  *       which recomputes the result slot; and</li>

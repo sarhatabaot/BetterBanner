@@ -22,12 +22,10 @@ public class BetterBanner extends JavaPlugin {
     public void onEnable() {
         Config.load(this);
 
-        // Version detection once, at startup. Per design section 48:
-        // unsupported versions log a warning and disable the loom
-        // feature; the plugin still loads.
+        // Environment detection once, at startup.
         this.loomAdapter = NmsVersions.detect(this);
         this.loomService = new LoomService(loomAdapter, this::debug);
-        getLogger().info("BetterBanner NMS adapter: "
+        getLogger().info("BetterBanner adapter: "
                 + loomAdapter.getClass().getSimpleName()
                 + " (server: " + loomService.serverBukkitVersion() + ")");
 

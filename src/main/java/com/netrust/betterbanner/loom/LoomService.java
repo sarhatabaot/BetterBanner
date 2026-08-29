@@ -22,19 +22,19 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Generic orchestration layer for the loom (design sections 61, 62, 33).
+ * Generic orchestration layer for the loom (implements Strategy B for
+ * over-limit banners).
  *
  * <p>Two strategies are supported for producing an over-limit result:
  * <ul>
  *   <li><b>Strategy A</b> (count &lt; 6): vanilla handles 0..5 patterns
  *       natively; BetterBanner is a no-op.</li>
- *   <li><b>Strategy B</b> (count &ge; 6): per design section 20, we
- *       build a shallow equivalent of the deep banner, write it to the
- *       input slot, let vanilla compute the next layer into the output
- *       slot, extract the new pattern, restore the original input, and
- *       write the final (deep + 1) result. This is the strategy that
- *       satisfies the user's request to "trick the server into thinking
- *       there are 5 layers instead of 6".</li>
+ *   <li><b>Strategy B</b> (count &ge; 6): build a shallow (5-pattern)
+ *       copy of the deep banner, write it to the input slot, let vanilla
+ *       compute the next layer into the output slot, extract the new
+ *       pattern, restore the original input, and write the final
+ *       (deep + 1) result. This works around the client's 6-pattern
+ *       display limit by showing a 5-pattern placeholder.</li>
  * </ul>
  */
 public final class LoomService {
@@ -43,7 +43,7 @@ public final class LoomService {
 
     /**
      * Number of patterns written to the input slot to keep the vanilla client
-     * happy while we compute an over-limit result. Must be strictly less than
+     * happy while computing an over-limit result. Must be strictly less than
      * {@link BannerService#VANILLA_MAX_PATTERNS} (6) so the client's loom
      * screen still shows the pattern selection buttons.
      */
@@ -67,9 +67,7 @@ public final class LoomService {
     }
 
     /**
-     * Per-tick update for {@code player}. Implements the algorithm
-     * from design sections 33, 61, and 20 (Strategy B for over-limit
-     * banners).
+     * Per-tick update for {@code player}.
      */
     public void update(@NotNull Player player) {
         if (!adapter.isLoom(player)) {
@@ -78,7 +76,7 @@ public final class LoomService {
             return;
         }
 
-        // If we have a pending swap from a previous tick, finish it.
+        // If a pending swap exists from a previous tick, finish it.
         if (pendingSwaps.containsKey(player.getUniqueId())) {
             finishPendingSwap(player);
             return;
@@ -99,12 +97,12 @@ public final class LoomService {
         int count = BannerService.getPatternCount(banner);
         debug("update(" + player.getName() + "): banner has " + count + " patterns");
 
-        // Per design section 38: vanilla retains control while count < 6.
+        // Vanilla retains control while count < 6.
         if (count < BannerService.VANILLA_MAX_PATTERNS) {
             return;
         }
 
-        // Per design section 70: when the cap is reached, mirror vanilla.
+        // When the cap is reached, mirror vanilla behavior.
         int playerCap = BannerService.getMaxForPlayer(player);
         if (BannerService.isAtOrAboveCap(count, playerCap)) {
             debug("update(" + player.getName() + "): at cap (" + count + "/" + playerCap + "), leaving to vanilla");

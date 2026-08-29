@@ -1,7 +1,8 @@
 package com.netrust.betterbanner;
 
+import com.netrust.betterbanner.nms.BukkitLoomAdapter;
 import com.netrust.betterbanner.nms.LoomAdapter;
-import com.netrust.betterbanner.nms.NoOpLoomAdapter;
+import com.netrust.betterbanner.nms.ProtocolLibLoomAdapter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,14 +66,14 @@ public class BetterBannerCommand implements CommandExecutor {
         if (!sender.hasPermission(Permissions.COMMAND_DEBUG_NMS)) {
             return noPermission(sender);
         }
-        sender.sendMessage(ChatColor.AQUA + "Dumping NMS class layout...");
+        sender.sendMessage(ChatColor.AQUA + "Dumping adapter diagnostics...");
         LoomAdapter adapter = plugin.getLoomAdapter();
         if (adapter == null) {
             sender.sendMessage(ChatColor.RED + "No LoomAdapter available (plugin not enabled?)");
             return true;
         }
         adapter.dumpDiagnostics(sender);
-        sender.sendMessage(ChatColor.AQUA + "End of NMS dump.");
+        sender.sendMessage(ChatColor.AQUA + "End of diagnostics.");
         return true;
     }
 
@@ -88,9 +89,9 @@ public class BetterBannerCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.AQUA + "Active LoomAdapter: " + ChatColor.WHITE + adapter.getClass().getName());
         sender.sendMessage(ChatColor.AQUA + "Server bukkit version: " + ChatColor.WHITE
                 + plugin.getLoomService().serverBukkitVersion());
-        if (adapter instanceof NoOpLoomAdapter) {
-            sender.sendMessage(ChatColor.YELLOW + "Adapter is a no-op (server version not supported).");
-            sender.sendMessage(ChatColor.YELLOW + "Run /betterbanner debug nms for a class layout dump.");
+        if (adapter instanceof BukkitLoomAdapter && !(adapter instanceof ProtocolLibLoomAdapter)) {
+            sender.sendMessage(ChatColor.YELLOW + "Adapter is a basic Bukkit adapter (ProtocolLib not detected).");
+            sender.sendMessage(ChatColor.YELLOW + "Run /betterbanner debug nms for adapter diagnostics.");
         } else {
             sender.sendMessage(ChatColor.AQUA + "Run /betterbanner debug nms for a class layout dump.");
         }

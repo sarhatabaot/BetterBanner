@@ -7,15 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Stable semantic interface for the server-side loom (design §12).
+ * Stable interface for reading and writing the server-side loom.
  *
- * <p>Every method on this interface maps to a server-side concept that is
- * stable across Minecraft versions <em>semantically</em> but not
- * <em>structurally</em>. The structural mapping is the per-version
- * adapter's job; the rest of BetterBanner only sees this interface.
- *
- * <p>Implementations are not required to be thread-safe; all calls happen on
- * the server's main thread.
+ * <p>Implementations talk to the real loom container. Every method
+ * maps to a server-side concept that is stable across Minecraft
+ * versions. The rest of BetterBanner only sees this interface.
  */
 public interface LoomAdapter {
 
@@ -33,8 +29,7 @@ public interface LoomAdapter {
 
     /**
      * @return {@code true} if {@code player} is currently interacting with
-     *         a real server-side loom (i.e. the active container is a loom
-     *         and the player is not just walking past one).
+     *         a loom (the active container is a loom).
      */
     boolean isLoom(@NotNull Player player);
 
@@ -48,44 +43,27 @@ public interface LoomAdapter {
     LoomState getState(@NotNull Player player);
 
     /**
-     * Place {@code result} into the real loom output slot. Implementations
-     * are responsible for the actual NMS write.
+     * Place {@code result} into the loom output slot.
      */
     void setResult(@NotNull Player player, @NotNull ItemStack result);
 
     /**
-     * Place {@code item} into the specified slot index of the loom
-     * {@code player} is currently interacting with. Used by Strategy B
-     * (vanilla-assisted calculation) to temporarily swap the banner
-     * input with a shallow equivalent.
+     * Place {@code item} into the specified slot.
      *
-     * <p>Slot indices are stable across versions: 0 = banner input,
-     * 1 = dye, 2 = pattern item, 3 = result. Other indices are
-     * implementation-specific (typically the player's inventory
-     * follows the loom's input slots).
-     *
-     * <p>Implementations should silently no-op if the slot index is
-     * out of range rather than throw.
+     * <p>Slot indices: 0 = banner, 1 = dye, 2 = pattern item,
+     * 3 = result.
      */
     void setSlot(int slotIndex, @NotNull Player player, @NotNull ItemStack item);
 
     /**
-     * Notify the client of slot changes after {@link #setResult}. Defaults to
-     * a no-op; implementations should override with the correct NMS call
-     * (e.g. {@code detectAndSendChanges()} on 1.14).
+     * Notify the client of slot changes.
      */
     default void synchronize(@NotNull Player player) {
         // no-op by default
     }
 
     /**
-     * Dump a human-readable summary of what this adapter resolved and
-     * what the live NMS classes expose. Used by the
-     * {@code /betterbanner debug nms} command.
-     *
-     * <p>Default implementation writes a brief "no diagnostics available"
-     * message; concrete adapters should override with a real NMS layout
-     * dump.
+     * Dump diagnostic information about this adapter.
      */
     default void dumpDiagnostics(@NotNull org.bukkit.command.CommandSender sender) {
         sender.sendMessage("BetterBanner NMS diagnostics: not available for this adapter ("

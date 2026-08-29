@@ -19,11 +19,7 @@ import java.util.UUID;
 
 /**
  * Per-player loom lifecycle: starts a polling task when a player opens a
- * loom and cancels it when they close it. Per design section 27,
- * BetterBanner needs to re-evaluate the loom state when any relevant
- * state changes; the simplest reliable signal is the inventory
- * open/close pair, plus a per-tick polling task that observes the live
- * NMS container directly.
+ * loom and cancels it when they close it.
  */
 public final class PlayerListener implements Listener {
 

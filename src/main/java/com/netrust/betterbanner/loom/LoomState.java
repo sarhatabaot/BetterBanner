@@ -8,9 +8,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Immutable snapshot of the real server-side loom's relevant state.
  *
- * <p>Per design §12, this exposes stable semantic information; generic
- * BetterBanner code never needs to know that 1.14 calls the selected-pattern
- * getter {@code e()}.
+ * <p>Exposes stable semantic information for the loom's state; generic
+ * BetterBanner code never needs to know NMS internals.
  *
  * <p>All four item fields are nullable: any of them may be empty. {@code
  * selectedPattern} is the loom's currently selected pattern index (Bukkit

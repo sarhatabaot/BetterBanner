@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Per-tick polling task for a single player with an open loom.
  *
- * <p>Per design section 32, polling is the preferred prototype strategy:
+ * <p>Polling is the primary observation strategy:
  * it sidesteps the timing questions around packet interception and NMS
  * method hooks while still answering the central question of whether a
  * plugin can inject a valid over-limit result into the real loom.
