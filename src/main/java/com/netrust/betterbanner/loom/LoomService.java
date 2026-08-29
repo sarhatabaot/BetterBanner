@@ -130,7 +130,7 @@ public final class LoomService {
      * result on the next tick.
      */
     private void startStrategyBSwap(@NotNull Player player, @NotNull ItemStack original, int count) {
-        ItemStack shallow = buildShallowBanner(original, SHALLOW_PATTERN_COUNT);
+        ItemStack shallow = BannerService.buildShallowBanner(original, SHALLOW_PATTERN_COUNT);
         if (shallow == null) {
             debug("startStrategyBSwap(" + player.getName() + "): failed to build shallow banner");
             return;
@@ -217,33 +217,6 @@ public final class LoomService {
                 + BannerService.getPatternCount(finalResult) + "-pattern result (original had "
                 + swap.count + "), restored input");
         pendingSwaps.remove(player.getUniqueId());
-    }
-
-    /**
-     * Build a banner with the same base color and the first
-     * {@code patternCount} patterns of {@code original}. Used to
-     * construct the "shallow equivalent" that vanilla will accept.
-     */
-    @Nullable
-    private static ItemStack buildShallowBanner(@NotNull ItemStack original, int patternCount) {
-        if (!(original.getItemMeta() instanceof BannerMeta)) {
-            return null;
-        }
-        BannerMeta originalMeta = (BannerMeta) original.getItemMeta();
-        if (originalMeta.numberOfPatterns() < patternCount) {
-            return null;
-        }
-        ItemStack shallow = original.clone();
-        BannerMeta shallowMeta = (BannerMeta) shallow.getItemMeta();
-        // Strip the trailing patterns so only the first `patternCount`
-        // remain. BannerMeta#setPatterns replaces the entire list.
-        List<Pattern> keep = new ArrayList<>(patternCount);
-        for (int i = 0; i < patternCount; i++) {
-            keep.add(originalMeta.getPattern(i));
-        }
-        shallowMeta.setPatterns(keep);
-        shallow.setItemMeta(shallowMeta);
-        return shallow;
     }
 
     /**

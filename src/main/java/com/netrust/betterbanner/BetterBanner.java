@@ -25,7 +25,7 @@ public class BetterBanner extends JavaPlugin {
         // Version detection once, at startup. Per design section 48:
         // unsupported versions log a warning and disable the loom
         // feature; the plugin still loads.
-        this.loomAdapter = NmsVersions.detect();
+        this.loomAdapter = NmsVersions.detect(this);
         this.loomService = new LoomService(loomAdapter, this::debug);
         getLogger().info("BetterBanner NMS adapter: "
                 + loomAdapter.getClass().getSimpleName()
@@ -41,7 +41,9 @@ public class BetterBanner extends JavaPlugin {
             getLogger().warning("betterbanner command not defined in plugin.yml");
         }
 
-        Metrics metrics = new Metrics(this, 3884);
+        if (!Config.isDisableMetrics()) {
+            new Metrics(this, 3884);
+        }
     }
 
 

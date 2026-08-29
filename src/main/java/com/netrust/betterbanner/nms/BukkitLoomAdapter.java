@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  * as {@code -1}. Generic BetterBanner code detects a completed selection by
  * observing the result slot instead of relying on that index.
  */
-public final class BukkitLoomAdapter implements LoomAdapter {
+public class BukkitLoomAdapter implements LoomAdapter {
 
     @Override
     public boolean isLoom(@NotNull Player player) {

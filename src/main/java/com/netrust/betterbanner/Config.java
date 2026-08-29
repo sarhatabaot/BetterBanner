@@ -13,6 +13,7 @@ public class Config {
     private static Integer permIntermediate = 0;
     private static Integer permAdvanced = 0;
     private static Integer permCopy = 0;
+    private static boolean disableMetrics = false;
 
     private Config() {
         throw new UnsupportedOperationException();
@@ -51,7 +52,12 @@ public class Config {
             permCopy = 0;
         }
 
+        disableMetrics = config.getBoolean("disable-metrics", false);
         plugin.getLogger().info("Config loaded: d: " + permDefault + " b:" + permBasic + " i:" + permIntermediate + " a:" + permAdvanced + " copy:" + permCopy);
+    }
+
+    public static boolean isDisableMetrics() {
+        return disableMetrics;
     }
 
     public static int maxDefault() {

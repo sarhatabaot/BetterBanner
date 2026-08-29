@@ -3,6 +3,7 @@ main: com.netrust.betterbanner.BetterBanner
 version: "@version@"
 authors: [jootunk, sarhatabaot]
 api-version: 1.14
+softdepend: [ProtocolLib]
 commands:
   betterbanner:
     description: Better banner base command.

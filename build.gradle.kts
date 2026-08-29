@@ -20,6 +20,7 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.md-5.net/content/repositories/snapshots/")
+    maven("https://repo.dmulloy2.net/repository/public/")
 }
 
 dependencies {
@@ -29,6 +30,7 @@ dependencies {
 
     implementation(libs.bstats.bukkit)
     compileOnly(libs.jetbrains.annotations)
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
 }
 
 java {

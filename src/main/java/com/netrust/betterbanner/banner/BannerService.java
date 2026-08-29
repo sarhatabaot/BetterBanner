@@ -10,6 +10,9 @@ import org.bukkit.inventory.meta.BannerMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Generic, version-agnostic banner logic. Per design §11 / §62, this is the
  * only place that knows how a banner works; NMS code is isolated in
@@ -105,5 +108,39 @@ public final class BannerService {
      */
     public static boolean isAtOrAboveCap(final int currentCount, final int maxForPlayer) {
         return currentCount >= maxForPlayer;
+    }
+
+    /**
+     * Produce a shallow copy of {@code original} that preserves only the first
+     * {@code patternCount} patterns. All other metadata (display name, lore,
+     * item flags) is carried forward unchanged.
+     *
+     * <p>Used by {@code LoomService} for both Strategy B (writing a fake
+     * 5-pattern banner to the input slot) and by {@code ProtocolLibLoomAdapter}
+     * (spoofing the NBT in outgoing packets so the client never sees 6+
+     * patterns).
+     *
+     * @return a new {@link ItemStack} with at most {@code patternCount}
+     *         patterns, or {@code null} if the input is not a banner or has
+     *         fewer patterns than requested.
+     */
+    @Nullable
+    public static ItemStack buildShallowBanner(@Nullable ItemStack original, int patternCount) {
+        if (!isBanner(original)) {
+            return null;
+        }
+        BannerMeta originalMeta = (BannerMeta) original.getItemMeta();
+        if (originalMeta == null || originalMeta.numberOfPatterns() < patternCount) {
+            return null;
+        }
+        ItemStack shallow = original.clone();
+        BannerMeta shallowMeta = (BannerMeta) shallow.getItemMeta();
+        List<Pattern> keep = new ArrayList<>(patternCount);
+        for (int i = 0; i < patternCount; i++) {
+            keep.add(originalMeta.getPattern(i));
+        }
+        shallowMeta.setPatterns(keep);
+        shallow.setItemMeta(shallowMeta);
+        return shallow;
     }
 }
