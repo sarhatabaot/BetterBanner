@@ -1,10 +1,10 @@
-package com.netrust.betterbanner;
+package net.sarhatabaot.betterbanner;
 
-import com.netrust.betterbanner.listener.LoomInventoryListener;
-import com.netrust.betterbanner.listener.PlayerListener;
-import com.netrust.betterbanner.loom.LoomService;
-import com.netrust.betterbanner.nms.LoomAdapter;
-import com.netrust.betterbanner.nms.NmsVersions;
+import net.sarhatabaot.betterbanner.listener.LoomInventoryListener;
+import net.sarhatabaot.betterbanner.listener.PlayerListener;
+import net.sarhatabaot.betterbanner.loom.LoomService;
+import net.sarhatabaot.betterbanner.nms.LoomAdapter;
+import net.sarhatabaot.betterbanner.nms.NmsVersions;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;

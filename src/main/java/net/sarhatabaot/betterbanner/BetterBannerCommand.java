@@ -1,8 +1,8 @@
-package com.netrust.betterbanner;
+package net.sarhatabaot.betterbanner;
 
-import com.netrust.betterbanner.nms.BukkitLoomAdapter;
-import com.netrust.betterbanner.nms.LoomAdapter;
-import com.netrust.betterbanner.nms.ProtocolLibLoomAdapter;
+import net.sarhatabaot.betterbanner.nms.BukkitLoomAdapter;
+import net.sarhatabaot.betterbanner.nms.LoomAdapter;
+import net.sarhatabaot.betterbanner.nms.ProtocolLibLoomAdapter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

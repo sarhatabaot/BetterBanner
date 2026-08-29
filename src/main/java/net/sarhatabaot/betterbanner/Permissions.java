@@ -1,9 +1,9 @@
-package com.netrust.betterbanner;
+package net.sarhatabaot.betterbanner;
 
 /**
- * @author sarhatabaot
+ * Permission node constants.
  */
-public class Permissions {
+public final class Permissions {
     private Permissions() {
         throw new UnsupportedOperationException();
     }

@@ -1,8 +1,8 @@
-package com.netrust.betterbanner.listener;
+package net.sarhatabaot.betterbanner.listener;
 
-import com.netrust.betterbanner.BetterBanner;
-import com.netrust.betterbanner.loom.LoomService;
-import com.netrust.betterbanner.loom.LoomUpdateTask;
+import net.sarhatabaot.betterbanner.BetterBanner;
+import net.sarhatabaot.betterbanner.loom.LoomService;
+import net.sarhatabaot.betterbanner.loom.LoomUpdateTask;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

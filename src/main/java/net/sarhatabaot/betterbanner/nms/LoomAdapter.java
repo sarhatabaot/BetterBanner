@@ -1,6 +1,6 @@
-package com.netrust.betterbanner.nms;
+package net.sarhatabaot.betterbanner.nms;
 
-import com.netrust.betterbanner.loom.LoomState;
+import net.sarhatabaot.betterbanner.loom.LoomState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

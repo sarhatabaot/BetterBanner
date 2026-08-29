@@ -1,4 +1,4 @@
-package com.netrust.betterbanner.loom;
+package net.sarhatabaot.betterbanner.loom;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

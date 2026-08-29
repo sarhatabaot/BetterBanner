@@ -1,6 +1,6 @@
-package com.netrust.betterbanner.loom;
+package net.sarhatabaot.betterbanner.loom;
 
-import com.netrust.betterbanner.BetterBanner;
+import net.sarhatabaot.betterbanner.BetterBanner;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;

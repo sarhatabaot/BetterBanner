@@ -1,8 +1,8 @@
-package com.netrust.betterbanner.loom;
+package net.sarhatabaot.betterbanner.loom;
 
-import com.netrust.betterbanner.banner.BannerResult;
-import com.netrust.betterbanner.banner.BannerService;
-import com.netrust.betterbanner.nms.LoomAdapter;
+import net.sarhatabaot.betterbanner.banner.BannerResult;
+import net.sarhatabaot.betterbanner.banner.BannerService;
+import net.sarhatabaot.betterbanner.nms.LoomAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

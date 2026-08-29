@@ -1,4 +1,4 @@
-package com.netrust.betterbanner.nms;
+package net.sarhatabaot.betterbanner.nms;
 
 import org.jetbrains.annotations.NotNull;
 

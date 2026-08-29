@@ -1,4 +1,4 @@
-package com.netrust.betterbanner.banner;
+package net.sarhatabaot.betterbanner.banner;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

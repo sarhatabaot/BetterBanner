@@ -1,7 +1,7 @@
-package com.netrust.betterbanner.banner;
+package net.sarhatabaot.betterbanner.banner;
 
-import com.netrust.betterbanner.BannerUtil;
-import com.netrust.betterbanner.Config;
+import net.sarhatabaot.betterbanner.BannerUtil;
+import net.sarhatabaot.betterbanner.Config;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

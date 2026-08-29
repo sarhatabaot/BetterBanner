@@ -1,10 +1,37 @@
 name: BetterBanner
-main: com.netrust.betterbanner.BetterBanner
+main: net.sarhatabaot.betterbanner.BetterBanner
 version: "@version@"
 authors: [jootunk, sarhatabaot]
 api-version: 1.14
 softdepend: [ProtocolLib]
+
 commands:
   betterbanner:
     description: Better banner base command.
     usage: /<command> [version|debug [nms|adapter]|reload]
+
+permissions:
+  betterbanner.unlimited:
+    description: No pattern cap.
+    default: op
+  betterbanner.advanced:
+    description: Apply up to the advanced pattern cap (default 15).
+    default: op
+  betterbanner.intermediate:
+    description: Apply up to the intermediate pattern cap (default 11).
+    default: op
+  betterbanner.basic:
+    description: Apply up to the basic pattern cap (default 8).
+    default: false
+  betterbanner.reload:
+    description: Reload the plugin configuration.
+    default: op
+  betterbanner.debug:
+    description: Toggle debug messages in the server log.
+    default: op
+  betterbanner.version:
+    description: View the plugin version.
+    default: true
+  betterbanner.debug.nms:
+    description: Dump active adapter diagnostic information.
+    default: op

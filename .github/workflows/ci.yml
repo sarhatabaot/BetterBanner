@@ -1,5 +1,5 @@
-# Gradle CI for BetterBanner. Runs on every push and pull request against master.
-# Uses JDK 8 to match the project's toolchain pin in build.gradle.kts.
+# CI for BetterBanner
+# Uses JDK 17 to match the project's toolchain (compiles to Java 8 bytecode).
 
 name: CI
 
@@ -21,7 +21,7 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v5
         with:
-          java-version: "8"
+          java-version: "17"
           distribution: "temurin"
 
       - name: Setup Gradle

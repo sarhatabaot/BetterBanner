@@ -66,7 +66,7 @@ tasks {
 
         relocate(
             "org.bstats",
-            "com.netrust.betterbanner.bstats"
+            "net.sarhatabaot.betterbanner.bstats"
         )
     }
 

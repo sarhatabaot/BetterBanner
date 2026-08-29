@@ -1,4 +1,4 @@
-package com.netrust.betterbanner.nms;
+package net.sarhatabaot.betterbanner.nms;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -6,7 +6,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.netrust.betterbanner.banner.BannerService;
+import net.sarhatabaot.betterbanner.banner.BannerService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
